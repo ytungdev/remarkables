@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .month-box {
+            flex: 1 0 21%;
+        }
+
+        @media (max-width: 1000px) {
+            .month-box {
+                flex: 1 0 45%;
+            }
+        }
+
+        .pic-B{border-color: #9e62e3;}
+        .pic-C{border-color: #e3627e;}
+        .pic-Y{border-color: #6aaee6;}
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <h1>Remarkables</h1>
+        <p>marks all the remarkables!</p>
+    </div>
+
+    <div class="container">
+        <div class="row" style="display: flex;flex-wrap: wrap;">
+            {% for i in range(12) %}
+            <div class="col-xs-6 col-sm-4 col-md-3 month-box">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-target="#{{context['months'][i]}}">
+                            {{context['months'][i]}}
+                        </div>
+                        <div class="panel-body collapse in" id="{{context['months'][i]}}">
+                            <ul class="list-group">
+                                {% for x in context['data'][i+1] %}
+                                <li class="list-group-item pic-{{x.pic}}">
+                                    <span>{{x.name}}</span> :
+                                    <span>{{x.event}}</span>
+                                    <br>
+                                    <small>[{{x.category}}]</small>
+                                    <span style="float:right">{{x.date}}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

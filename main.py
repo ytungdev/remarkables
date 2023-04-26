@@ -1,25 +1,22 @@
-import os
-from datetime import datetime
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
-from sqlalchemy.orm import Session
+from fastapi.templating import Jinja2Templates
 
+from sqlalchemy.orm import Session
 
 from packages import crud, models, schemas
 from packages.database import SessionLocal, engine
+
+import os
+from datetime import datetime
+import calendar
 
 models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
 
-
-# @app.get("/")
-# async def home():
-#     data = {
-#         "text": "hi"
-#     }
-#     return {"data": data}
+templates = Jinja2Templates(directory="templates")
 
 
 # @app.get("/page/{page_name}")
@@ -30,15 +27,6 @@ app = FastAPI()
 #     return {"data": data}
 
 
-# @app.get("/month/")
-# def list_month(mo: int = datetime.now().month):
-#     return {"month": mo, "count": 0, "result":[]}
-
-# @app.post("/remarkables/{remarkables_id}")
-# def update_remarkables(remarkables_id: int, remarkables: models.Remarkables):
-#     return {"item_name": remarkables.name, "remarkables_id": remarkables_id}
-
-
 def get_db():
     db = SessionLocal()
     try:
@@ -46,28 +34,45 @@ def get_db():
     finally:
         db.close()
 
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request, db: Session = Depends(get_db)):
+
+    data = {}
+    for i in range(1,13):
+        data[i] = crud.get_remarkables_by_month(db, month=i)
+    months = [calendar.month_name[i] for i in range(1,13)]
+    context = {
+        "data" : data,
+        "months" : months
+    }
+    return templates.TemplateResponse("home.html", {"request": request, "context": context})
+
 
 @app.post("/remarkables/", response_model=schemas.Remarkables)
 def create_remarkables(db: Session = Depends(get_db)):
     return crud.create_remarkables(db)
+
 
 @app.get("/remarkables/", response_model=list[schemas.Remarkables])
 def get_remarkables(db: Session = Depends(get_db)):
     return crud.get_remarkables(db)
 
 # @app.get("/remarkables/", response_model=list[schemas.Remarkables])
+
+
 @app.get("/remarkables/month/")
-def get_remarkables_by_month(month:int = datetime.now().month, db: Session = Depends(get_db)):
-    if month > 12:
+def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depends(get_db)):
+    if m > 12:
         raise HTTPException(status_code=404, detail="Invalid month")
-    results = crud.get_remarkables_by_month(db, month=month)
+    results = crud.get_remarkables_by_month(db, month=m)
     data = {
-        'month': month,
-        'result':results
+        'month': m,
+        'result': results
     }
     return data
 
+
 if __name__ == "__main__":
-   os.system('uvicorn main:app --reload --port 8080')
+    os.system('uvicorn main:app --reload --port 8080')
 
 # get_remarkables
