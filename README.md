@@ -1,2 +1,3 @@
-# awayfromhome
-App for people away from home
+# important-dates
+
+Mark down all important dates
