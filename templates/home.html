@@ -19,15 +19,85 @@
             }
         }
 
-        .pic-B{border-color: #9e62e3;}
-        .pic-C{border-color: #e3627e;}
-        .pic-Y{border-color: #6aaee6;}
+        .pic-B {
+            border-color: #9e62e3;
+        }
+
+        .pic-C {
+            border-color: #e3627e;
+        }
+
+        .pic-Y {
+            border-color: #6aaee6;
+        }
+
+        .modal {
+            text-align: center;
+            padding: 0 !important;
+        }
+
+        .modal:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -4px;
+            /* Adjusts for spacing */
+        }
+
+        .modal-dialog {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .input-group-addon {
+            width: 100px;
+            text-align: left;
+        }
+
+        .form-control[input] {
+            width: 250px;
+        }
     </style>
+    <script>
+        $(document).ready(function () {
+            // $('.btn-toggle').on('click', function () {
+            //     $(this).find('.btn').toggleClass('active');
+
+            //     if ($(this).find('.btn-warning').length > 0) {
+            //         $(this).find('.btn').toggleClass('btn-warning');
+            //     }
+
+            //     $(this).find('.btn').toggleClass('btn-default');
+            // });
+            $('.tgbtn').on('click', function () {
+                $(this).parent().find('.btn').removeClass('btn-success');
+                $(this).parent().find('.btn').removeClass('btn-danger');
+                $(this).parent().find('.btn').removeClass('btn-primary');
+                $(this).parent().find('.btn').removeClass('btn-warning');
+                $(this).parent().find('.btn').addClass('btn-default');
+                v = $(this).find("input").val()
+                if (v == 'B') {
+                    $(this).addClass('btn-success');
+                } else if (v == 'C') {
+                    $(this).addClass('btn-danger');
+                } else if (v == 'Y') {
+                    $(this).addClass('btn-primary');
+                } else {
+                    $(this).addClass('btn-warning');
+                }
+
+            });
+        });
+
+
+    </script>
 </head>
 
 <body>
     <div class="jumbotron text-center">
-        <h1>Remarkables</h1>
+        <h1 data-toggle="modal" data-target="#formModal">Remarkables</h1>
         <p>marks all the remarkables!</p>
     </div>
 
@@ -38,7 +108,7 @@
                 <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading" data-toggle="collapse" data-target="#{{context['months'][i]}}">
-                            {{context['months'][i]}}
+                            <h4>{{context['months'][i]}}</h4>
                         </div>
                         <div class="panel-body collapse in" id="{{context['months'][i]}}">
                             <ul class="list-group">
@@ -59,6 +129,65 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <form action="/remarkables/" method="post">
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">Event</span>
+                            <div class="btn-group btn-toggle" data-toggle="buttons">
+                                <label class="tgbtn btn btn-default">
+                                    <input type="radio" name="options" value="anniversay" checked=""> Anniversay
+                                </label>
+                                <label class="tgbtn btn btn-warning active">
+                                    <input type="radio" name="options" value="birthday"> Birthday
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Name</span>
+                            <input id="name" type="text" class="form-control" name="name" size="30" placeholder="who?">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Category</span>
+                            <input id="category" type="text" class="form-control" name="category" size="30"
+                                placeholder="Friends? Family? Love Tomb?">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Date</span>
+                            <input id="date" type="date" class="form-control" name="date" placeholder="YYYY-MM-DD">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">PIC</span>
+                            <div class="btn-group btn-toggle" data-toggle="buttons">
+                                <label class="tgbtn btn btn-default">
+                                    <input type="radio" name="options" value="C" checked=""> C
+                                </label>
+                                <label class="tgbtn btn btn-success active">
+                                    <input type="radio" name="options" value="B"> B
+                                </label>
+                                <label class="tgbtn btn btn-default">
+                                    <input type="radio" name="options" value="Y" checked=""> Y
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Add" class="btn btn-default">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
