@@ -62,15 +62,6 @@
     </style>
     <script>
         $(document).ready(function () {
-            // $('.btn-toggle').on('click', function () {
-            //     $(this).find('.btn').toggleClass('active');
-
-            //     if ($(this).find('.btn-warning').length > 0) {
-            //         $(this).find('.btn').toggleClass('btn-warning');
-            //     }
-
-            //     $(this).find('.btn').toggleClass('btn-default');
-            // });
             $('.tgbtn').on('click', function () {
                 $(this).parent().find('.btn').removeClass('btn-success');
                 $(this).parent().find('.btn').removeClass('btn-danger');
@@ -87,7 +78,6 @@
                 } else {
                     $(this).addClass('btn-warning');
                 }
-
             });
         });
 
@@ -97,7 +87,12 @@
 
 <body>
     <div class="jumbotron text-center">
-        <h1 data-toggle="modal" data-target="#formModal">Remarkables</h1>
+        <h1 data-toggle="modal" data-target="#formModal">
+            <span style="border: 10px solid black;padding:5px 15px;margin:20px 5px 5px 5px">
+                Remarkables
+            </span>
+        </h1>
+        <br>
         <p>marks all the remarkables!</p>
     </div>
 
@@ -113,7 +108,7 @@
                         <div class="panel-body collapse in" id="{{context['months'][i]}}">
                             <ul class="list-group">
                                 {% for x in context['data'][i+1] %}
-                                <li class="list-group-item pic-{{x.pic}}">
+                                <li class="list-group-item pic-{{x.pic}}" id="id_{{x.id}}">
                                     <span>{{x.name}}</span> :
                                     <span>{{x.event}}</span>
                                     <br>
@@ -144,10 +139,10 @@
                             <span class="input-group-addon">Event</span>
                             <div class="btn-group btn-toggle" data-toggle="buttons">
                                 <label class="tgbtn btn btn-default">
-                                    <input type="radio" name="options" value="anniversay" checked=""> Anniversay
+                                    <input type="radio" name="event" value="anniversary"> Anniversay
                                 </label>
                                 <label class="tgbtn btn btn-warning active">
-                                    <input type="radio" name="options" value="birthday"> Birthday
+                                    <input type="radio" name="event" value="birthday" checked=""> Birthday
                                 </label>
                             </div>
                         </div>
@@ -168,13 +163,13 @@
                             <span class="input-group-addon">PIC</span>
                             <div class="btn-group btn-toggle" data-toggle="buttons">
                                 <label class="tgbtn btn btn-default">
-                                    <input type="radio" name="options" value="C" checked=""> C
+                                    <input type="radio" name="pic" value="C"> C
                                 </label>
                                 <label class="tgbtn btn btn-success active">
-                                    <input type="radio" name="options" value="B"> B
+                                    <input type="radio" name="pic" value="B" checked=""> B
                                 </label>
                                 <label class="tgbtn btn btn-default">
-                                    <input type="radio" name="options" value="Y" checked=""> Y
+                                    <input type="radio" name="pic" value="Y"> Y
                                 </label>
                             </div>
                         </div>

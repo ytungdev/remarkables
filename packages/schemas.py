@@ -18,11 +18,11 @@ class RemarkablesBase(BaseModel):
     event: Event
     date: date # 'YY-MM-DD'
     pic: Pic = 'B'
+    class Config:
+        orm_mode = True
 
 class Remarkables(RemarkablesBase):
     id : int
-    class Config:
-        orm_mode = True
 
 class RemarkablesCreate(RemarkablesBase):
     pass

@@ -48,10 +48,16 @@ def home(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("home.html", {"request": request, "context": context})
 
 
-@app.post("/remarkables/", response_model=schemas.Remarkables)
-def create_remarkables(db: Session = Depends(get_db)):
-    return crud.create_remarkables(db)
+# @app.post("/remarkables/", response_model=schemas.RemarkablesCreate)
+# def create_remarkables(remarkables: schemas.RemarkablesCreate, db: Session = Depends(get_db)):
+#     print(remarkables)
+#     return crud.create_remarkables(db, remarkables)
 
+@app.post("/remarkables/", response_model=schemas.RemarkablesCreate)
+async def create_remarkables(request: Request, db: Session = Depends(get_db)):
+    data = await request.form()
+    model = schemas.RemarkablesCreate(**data)
+    return crud.create_remarkables(db, model)
 
 @app.get("/remarkables/", response_model=list[schemas.Remarkables])
 def get_remarkables(db: Session = Depends(get_db)):
