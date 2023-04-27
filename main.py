@@ -48,6 +48,14 @@ def home(request: Request, db: Session = Depends(get_db)):
     }
     return templates.TemplateResponse("home.html", {"request": request, "context": context})
 
+
+## GET rmkbls by QUERY
+@app.get("/remarkables/", response_model=list[schemas.Remarkables])
+async def get_remarkables_by_q(db: Session = Depends(get_db), name: str=None, category:str=None, event:str=None, pic:str=None):
+    return crud.get_remarkables_by_q(db, name, category, event, pic)
+
+
+## ADD rmkbls
 @app.post("/remarkables/", response_class=RedirectResponse)
 async def create_remarkables(request: Request, db: Session = Depends(get_db)):
     data = await request.form()
@@ -55,6 +63,8 @@ async def create_remarkables(request: Request, db: Session = Depends(get_db)):
     res = crud.create_remarkables(db, model)
     return RedirectResponse('/', status_code=303)
 
+
+## DEL rmkbls by ID
 @app.delete("/remarkables/{remarkables_id}")
 def delete_remarkables(remarkables_id: int, db: Session = Depends(get_db)):
     res = crud.delete_remarkables(db, remarkables_id)
@@ -64,10 +74,13 @@ def delete_remarkables(remarkables_id: int, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=404, detail="Remarkables not found")
 
+## GET all rmkbls
 @app.get("/remarkables/", response_model=list[schemas.Remarkables])
 def get_remarkables(db: Session = Depends(get_db)):
     return crud.get_remarkables(db)
 
+
+## GET list of rmkbls by MONTH
 @app.get("/remarkables/month/")
 def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depends(get_db)):
     if m > 12:

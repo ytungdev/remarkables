@@ -8,6 +8,21 @@ from datetime import date
 def get_remarkables(db: Session):
     return db.query(models.Remarkables).all()
 
+def get_remarkables_by_q(db: Session, name: str=None, category:str=None, event:str=None, pic:str=None):
+    q = db.query(models.Remarkables)
+    print(name, category, event, pic)
+    if name:
+        q = q.filter(models.Remarkables.name==name)
+    if category:
+        q = q.filter(models.Remarkables.category==category)
+    if event != None:
+        q = q.filter(models.Remarkables.event==event)
+    if pic != None:
+        q = q.filter(models.Remarkables.pic==pic)
+    res = q.order_by(models.Remarkables.id.desc()).all()
+    sres = sorted(res, key=lambda x: int(x.date.month)*100+int(x.date.day))
+    print(q.statement.compile(compile_kwargs={"literal_binds": True}))
+    return sres
 
 def get_remarkables_by_month(db: Session, month: int):
     res = db.query(models.Remarkables).filter(extract('month', models.Remarkables.date) == month).order_by(models.Remarkables.id.desc()).all()
