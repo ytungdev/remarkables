@@ -15,8 +15,19 @@
 
         @media (max-width: 1000px) {
             .month-box {
+                flex: 1 30%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .month-box {
                 flex: 1 0 45%;
             }
+        }
+
+        .list-group-item {
+            border-width: 2px;
+            overflow: auto;
         }
 
         .pic-B {
@@ -59,9 +70,24 @@
         .form-control[input] {
             width: 250px;
         }
+
+        .del-btn {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+        }
+
+        .inactive {
+            background-color: #b5b5b5 !important;
+            color: white;
+        }
     </style>
     <script>
         $(document).ready(function () {
+            $('.list-group-item').on('click', function () {
+                $(this).toggleClass('inactive');
+            });
+
             $('.tgbtn').on('click', function () {
                 $(this).parent().find('.btn').removeClass('btn-success');
                 $(this).parent().find('.btn').removeClass('btn-danger');
@@ -79,9 +105,40 @@
                     $(this).addClass('btn-warning');
                 }
             });
+
+            $('.del-btn').on('click', function () {
+                id = $(this).data('id')
+                console.log(id)
+                if (confirm("delete this ?") == true) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/remarkables/" + id,
+                        success: function (msg) {
+                            location.reload();
+                        },
+                        error: function (jqXHR, exception) {
+                            var msg = '';
+                            if (jqXHR.status === 0) {
+                                msg = 'Not connect.\n Verify Network.';
+                            } else if (jqXHR.status == 404) {
+                                msg = 'Requested page not found. [404]';
+                            } else if (jqXHR.status == 500) {
+                                msg = 'Internal Server Error [500].';
+                            } else if (exception === 'parsererror') {
+                                msg = 'Requested JSON parse failed.';
+                            } else if (exception === 'timeout') {
+                                msg = 'Time out error.';
+                            } else if (exception === 'abort') {
+                                msg = 'Ajax request aborted.';
+                            } else {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            $('#post').html(msg);
+                        },
+                    });
+                }
+            });
         });
-
-
     </script>
 </head>
 
@@ -105,15 +162,24 @@
                         <div class="panel-heading" data-toggle="collapse" data-target="#{{context['months'][i]}}">
                             <h4>{{context['months'][i]}}</h4>
                         </div>
+                        {% if i+1 <  context['current'] %}
+                        <div class="panel-body collapse" id="{{context['months'][i]}}">
+                        {% else %}
                         <div class="panel-body collapse in" id="{{context['months'][i]}}">
+                        {% endif %}
                             <ul class="list-group">
                                 {% for x in context['data'][i+1] %}
+                                {% if x.active == 1 %}
                                 <li class="list-group-item pic-{{x.pic}}" id="id_{{x.id}}">
-                                    <span>{{x.name}}</span> :
-                                    <span>{{x.event}}</span>
+                                {% else %}
+                                <li class="list-group-item pic-{{x.pic}} inactive" id="id_{{x.id}}">
+                                {% endif %}
+                                    <span class="card-name">{{x.name}}</span> :
+                                    <span class="card-event">{{x.event}}</span>
                                     <br>
-                                    <small>[{{x.category}}]</small>
-                                    <span style="float:right">{{x.date}}</span>
+                                    <small class="card-category">[{{x.category}}]</small>
+                                    <span style="float:right" class="badge">{{x.date}}</span>
+                                    <span class="del-btn" style="float:right" data-id="{{x.id}}">&times;</span>
                                 </li>
                                 {% endfor %}
                             </ul>
