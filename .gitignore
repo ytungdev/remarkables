@@ -1,5 +1,10 @@
-secrets.json
 alembic/
+
+# docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

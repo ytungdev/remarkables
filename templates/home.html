@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Mono">
     <style>
         .month-box {
             flex: 1 0 21%;
@@ -26,20 +27,20 @@
         }
 
         .list-group-item {
-            border-width: 2px;
+            border-width: 5px;
             overflow: auto;
         }
 
         .pic-B {
-            border-color: #BA90C6;
+            border-color: #D3CEDF;
         }
 
         .pic-C {
-            border-color: #E8A0BF;
+            border-color: #F2D7D9;
         }
 
         .pic-Y {
-            border-color: #C0DBEA;
+            border-color: #9CB4CC;
         }
 
         .modal {
@@ -78,7 +79,7 @@
         }
 
         .inactive {
-            background-color: #7D6E83 !important;
+            background-color: #f5f5f5 !important;
             color: white;
         }
 
@@ -86,8 +87,18 @@
             background-color: #FFD966;
             border-color: #FFD966;
         }
+
         .panel-primary {
             border-color: #FFD966;
+        }
+
+        .header {
+            background-color: #e8b261 !important;
+            color: white;
+            font-family: "Fira Mono", monospace;
+            height: 300px;
+            vertical-align: center;
+            padding-top: 75px;
         }
     </style>
     <script>
@@ -151,14 +162,14 @@
 </head>
 
 <body>
-    <div class="jumbotron text-center">
+    <div class="jumbotron text-center header">
         <h1 data-toggle="modal" data-target="#formModal">
-            <span style="border: 10px solid #ECA869;color:#ECA869;padding:5px 15px;margin:20px 5px 5px 5px">
-                Remarkables
+            <span style="border: 10px solid white;color:white;padding:5px 15px;margin:20px 5px 5px 5px">
+                REMARKABLES
             </span>
         </h1>
         <br>
-        <p>marks all the remarkables!</p>
+        <p>Mark all the REMARKABLES <span class="glyphicon glyphicon-heart"></span></p>
     </div>
 
     <div class="container">
@@ -168,98 +179,99 @@
                 <div class="panel-group">
                     {% if i+1 == context['current'] %}
                     <div class="panel panel-primary">
-                    {% else %}    
-                    <div class="panel panel-default">
-                    {% endif %}
-                        <div class="panel-heading" data-toggle="collapse" data-target="#{{context['months'][i]}}">
-                            <h4>{{context['months'][i]}}</h4>
-                        </div>
-                        {% if i+1 <  context['current'] %}
-                        <div class="panel-body collapse" id="{{context['months'][i]}}">
                         {% else %}
-                        <div class="panel-body collapse in" id="{{context['months'][i]}}">
-                        {% endif %}
-                            <ul class="list-group">
-                                {% for x in context['data'][i+1] %}
-                                {% if x.active == 1 %}
-                                <li class="list-group-item pic-{{x.pic}}" id="id_{{x.id}}">
+                        <div class="panel panel-default">
+                            {% endif %}
+                            <div class="panel-heading" data-toggle="collapse" data-target="#{{context['months'][i]}}">
+                                <h4>{{context['months'][i]}}</h4>
+                            </div>
+                            {% if i+1 < context['current'] %} <div class="panel-body collapse"
+                                id="{{context['months'][i]}}">
                                 {% else %}
-                                <li class="list-group-item pic-{{x.pic}} inactive" id="id_{{x.id}}">
-                                {% endif %}
-                                    <span class="card-name">{{x.name}}</span> :
-                                    <span class="card-event">{{x.event}}</span>
-                                    <br>
-                                    <small class="card-category">[{{x.category}}]</small>
-                                    <span style="float:right" class="badge">{{x.date}}</span>
-                                    <span class="del-btn" style="float:right" data-id="{{x.id}}">&times;</span>
-                                </li>
-                                {% endfor %}
-                            </ul>
+                                <div class="panel-body collapse in" id="{{context['months'][i]}}">
+                                    {% endif %}
+                                    <ul class="list-group">
+                                        {% for x in context['data'][i+1] %}
+                                        {% if x.active == 1 %}
+                                        <li class="list-group-item pic-{{x.pic}}" id="id_{{x.id}}">
+                                            {% else %}
+                                        <li class="list-group-item pic-{{x.pic}} inactive" id="id_{{x.id}}">
+                                            {% endif %}
+                                            <span class="card-name">{{x.name}}</span> :
+                                            <span class="card-event">{{x.event}}</span>
+                                            <br>
+                                            <small class="card-category">[{{x.category}}]</small>
+                                            <span style="float:right" class="badge">{{x.date}}</span>
+                                            <span class="del-btn" style="float:right" data-id="{{x.id}}">&times;</span>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="formModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add remarkables</h4>
+        <!-- Modal -->
+        <div class="modal fade" id="formModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add remarkables</h4>
+                    </div>
+                    <form action="/remarkables/" method="post">
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <span class="input-group-addon">Event</span>
+                                <div class="btn-group btn-toggle" data-toggle="buttons">
+                                    <label class="tgbtn btn btn-default">
+                                        <input type="radio" name="event" value="anniversary"> Anniversay
+                                    </label>
+                                    <label class="tgbtn btn btn-warning active">
+                                        <input type="radio" name="event" value="birthday" checked=""> Birthday
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Name</span>
+                                <input id="name" type="text" class="form-control" name="name" size="30"
+                                    placeholder="who?">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Category</span>
+                                <input id="category" type="text" class="form-control" name="category" size="30"
+                                    placeholder="Friends? Family? Love Tomb?">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">Date</span>
+                                <input id="date" type="date" class="form-control" name="date" placeholder="YYYY-MM-DD">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">PIC</span>
+                                <div class="btn-group btn-toggle" data-toggle="buttons">
+                                    <label class="tgbtn btn btn-default">
+                                        <input type="radio" name="pic" value="C"> C
+                                    </label>
+                                    <label class="tgbtn btn btn-success active">
+                                        <input type="radio" name="pic" value="B" checked=""> B
+                                    </label>
+                                    <label class="tgbtn btn btn-default">
+                                        <input type="radio" name="pic" value="Y"> Y
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" value="Add" class="btn btn-default">
+                        </div>
+                    </form>
                 </div>
-                <form action="/remarkables/" method="post">
-                    <div class="modal-body">
-                        <div class="input-group">
-                            <span class="input-group-addon">Event</span>
-                            <div class="btn-group btn-toggle" data-toggle="buttons">
-                                <label class="tgbtn btn btn-default">
-                                    <input type="radio" name="event" value="anniversary"> Anniversay
-                                </label>
-                                <label class="tgbtn btn btn-warning active">
-                                    <input type="radio" name="event" value="birthday" checked=""> Birthday
-                                </label>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Name</span>
-                            <input id="name" type="text" class="form-control" name="name" size="30" placeholder="who?">
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Category</span>
-                            <input id="category" type="text" class="form-control" name="category" size="30"
-                                placeholder="Friends? Family? Love Tomb?">
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">Date</span>
-                            <input id="date" type="date" class="form-control" name="date" placeholder="YYYY-MM-DD">
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-addon">PIC</span>
-                            <div class="btn-group btn-toggle" data-toggle="buttons">
-                                <label class="tgbtn btn btn-default">
-                                    <input type="radio" name="pic" value="C"> C
-                                </label>
-                                <label class="tgbtn btn btn-success active">
-                                    <input type="radio" name="pic" value="B" checked=""> B
-                                </label>
-                                <label class="tgbtn btn btn-default">
-                                    <input type="radio" name="pic" value="Y"> Y
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" value="Add" class="btn btn-default">
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
 
 </body>
 
