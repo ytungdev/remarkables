@@ -29,7 +29,10 @@ Mark all the REMARKABLES
 
 ## Usage
 
-- Visit `<host>:<port>` or `localhost8080` by default
+- Visit `<host>:<port>` or `localhost:8080` by default
 
 - Press the title **[REMARKABLES]** to open input form.
 
+## APIs
+
+- Visit `<host>:<port>/docs` or `localhost:8080/docs` by default
