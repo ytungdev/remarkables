@@ -1,6 +1,6 @@
 # REMARKABLES
 
-Mark all the REMARKABLES
+Mark all the REMARKABLES. Widget for marking important dates (birthdays/anniversaries).
 
 
 ## Installation
