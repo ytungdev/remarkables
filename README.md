@@ -1,3 +1,3 @@
-# important-dates
+# REMARKABLES
 
-Mark down all important dates
+Mark all the REMARKABLES
