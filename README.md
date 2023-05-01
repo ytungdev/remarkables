@@ -3,7 +3,7 @@
 Mark all the REMARKABLES
 
 
-## installation
+## Installation
 
 1. install required package with `pip`
 
