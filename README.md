@@ -1,6 +1,6 @@
-# important-dates
+# REMARKABLES
 
-Mark down all important dates
+Mark all the REMARKABLES
 
 
 ## installation
@@ -26,3 +26,4 @@ or
 ```bash
 uvicorn main:app --reload --host 0.0.0.0 --port 8080
 ```
+Mark all the REMARKABLES
