@@ -2,6 +2,7 @@ alembic/
 static/
 secret-*
 .DS_Store
+.env
 
 # docker
 Dockerfile

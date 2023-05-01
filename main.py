@@ -92,8 +92,8 @@ def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depend
     }
     return data
 
-from fastapi.staticfiles import StaticFiles
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# from fastapi.staticfiles import StaticFiles
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 
