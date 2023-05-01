@@ -13,19 +13,9 @@ import calendar
 
 models.Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
-
-
-# @app.get("/page/{page_name}")
-# async def page(page_name: str):
-#     data = {
-#         "page": page_name
-#     }
-#     return {"data": data}
-
 
 def get_db():
     db = SessionLocal()
@@ -34,9 +24,9 @@ def get_db():
     finally:
         db.close()
 
+## GET homepage
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request, db: Session = Depends(get_db)):
-
     data = {}
     for i in range(1,13):
         data[i] = crud.get_remarkables_by_month(db, month=i)
@@ -44,16 +34,17 @@ def home(request: Request, db: Session = Depends(get_db)):
     context = {
         "data" : data,
         "months" : months,
-        "current" : datetime.now().month
+        "current" : {
+            "month" : datetime.now().month,
+            "day"  : datetime.now().day
+        }
     }
     return templates.TemplateResponse("home.html", {"request": request, "context": context})
-
 
 ## GET rmkbls by QUERY
 @app.get("/remarkables/", response_model=list[schemas.Remarkables])
 async def get_remarkables_by_q(db: Session = Depends(get_db), name: str=None, category:str=None, event:str=None, pic:str=None):
     return crud.get_remarkables_by_q(db, name, category, event, pic)
-
 
 ## ADD rmkbls
 @app.post("/remarkables/", response_class=RedirectResponse)
@@ -62,7 +53,6 @@ async def create_remarkables(request: Request, db: Session = Depends(get_db)):
     model = schemas.RemarkablesCreate(**data)
     res = crud.create_remarkables(db, model)
     return RedirectResponse('/', status_code=303)
-
 
 ## DEL rmkbls by ID
 @app.delete("/remarkables/{remarkables_id}")
@@ -79,7 +69,6 @@ def delete_remarkables(remarkables_id: int, db: Session = Depends(get_db)):
 def get_remarkables(db: Session = Depends(get_db)):
     return crud.get_remarkables(db)
 
-
 ## GET list of rmkbls by MONTH
 @app.get("/remarkables/month/")
 def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depends(get_db)):
@@ -92,12 +81,6 @@ def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depend
     }
     return data
 
-# from fastapi.staticfiles import StaticFiles
-# app.mount("/static", StaticFiles(directory="static"), name="static")
-
-
-
 if __name__ == "__main__":
     os.system('uvicorn main:app --reload --host 0.0.0.0 --port 8080')
 
-# get_remarkables

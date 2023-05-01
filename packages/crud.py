@@ -32,7 +32,7 @@ def get_remarkables_by_month(db: Session, month: int):
     for r in sres:
         d = r.__dict__
         parsed = r.date.replace(year=today.year)
-        d['active'] = 1 if parsed > today else 0
+        d['active'] = 2 if parsed == today else 1 if parsed > today else 0 
         final.append(d)
     return final
 

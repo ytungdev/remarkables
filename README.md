@@ -29,4 +29,7 @@ Mark all the REMARKABLES
 
 ## Usage
 
-press the title **[REMARKABLES]** to open input form.
+- Visit `<host>:<port>` or `localhost8080` by default
+
+- Press the title **[REMARKABLES]** to open input form.
+

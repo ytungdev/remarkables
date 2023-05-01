@@ -9,4 +9,3 @@ class Remarkables(Base):
     category = Column(String)
     event = Column(String)
     date = Column(Date)
-    pic = Column(String)

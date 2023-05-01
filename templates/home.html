@@ -26,18 +26,21 @@
             }
         }
 
+        body{
+            font-family: "Fira Mono", monospace;
+            user-select: none;
+        }
+
         .list-group-item {
             border-width: 5px;
             overflow: auto;
         }
 
-        .pic-B {border-color: #D3CEDF;}
-        .pic-C {border-color: #F2D7D9;}
-        .pic-Y {border-color: #9CB4CC;}
-        .inactive.pic-B {color: #D3CEDF;}
-        .inactive.pic-C {color: #F2D7D9;}
-        .inactive.pic-Y {color: #9CB4CC;}
-        
+        .list-group-item {border-color: #FCDDB0; background-color: #FFF8EA;}
+        .list-group-item.inactive {color: #F4B183;}
+        .list-group-item.today {border-color: #FF9F9F;color:#FF9F9F}
+        .card-category{color: #B7B7B7;}
+        .card-name{font-weight: bold;}
 
         .modal {
             text-align: center;
@@ -75,7 +78,7 @@
         }
 
         .inactive {
-            background-color: #f5f5f5 !important;
+            background-color: #fce7c7 !important;
             color: white;
         }
 
@@ -99,10 +102,6 @@
     </style>
     <script>
         $(document).ready(function () {
-            $('.list-group-item').on('click', function () {
-                $(this).toggleClass('inactive');
-            });
-
             $('.tgbtn').on('click', function () {
                 $(this).parent().find('.btn').removeClass('btn-success');
                 $(this).parent().find('.btn').removeClass('btn-danger');
@@ -182,28 +181,33 @@
                             <div class="panel-heading" data-toggle="collapse" data-target="#{{context['months'][i]}}">
                                 <h4>{{context['months'][i]}}</h4>
                             </div>
-                            {% if i+1 < context['current'] %} <div class="panel-body collapse"
-                                id="{{context['months'][i]}}">
-                                {% else %}
-                                <div class="panel-body collapse in" id="{{context['months'][i]}}">
+                            {% if i+1 < context['current']['month'] %} 
+                            <div class="panel-body collapse" id="{{context['months'][i]}}">
+                            {% else %}
+                            <div class="panel-body collapse in" id="{{context['months'][i]}}">
+                            {% endif %}
+                                <ul class="list-group">
+                                {% for x in context['data'][i+1] %}
+                                    {% if x.active == 2 %}
+                                    <li class="list-group-item today" id="id_{{x.id}}">
+                                    {% elif x.active == 1 %}
+                                    <li class="list-group-item" id="id_{{x.id}}">
+                                    {% else %}
+                                    <li class="list-group-item inactive" id="id_{{x.id}}">
                                     {% endif %}
-                                    <ul class="list-group">
-                                        {% for x in context['data'][i+1] %}
-                                        {% if x.active == 1 %}
-                                        <li class="list-group-item pic-{{x.pic}}" id="id_{{x.id}}">
-                                            {% else %}
-                                        <li class="list-group-item pic-{{x.pic}} inactive" id="id_{{x.id}}">
-                                            {% endif %}
-                                            <span class="card-name">{{x.name}}</span> :
-                                            <span class="card-event">{{x.event}}</span>
-                                            <br>
-                                            <small class="card-category">[{{x.category}}]</small>
-                                            <span style="float:right" class="badge">{{x.date}}</span>
-                                            <span class="del-btn" style="float:right" data-id="{{x.id}}">&times;</span>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+                                        {% if x.event == 'birthday' %}
+                                        <span class="card-name">{{x.name}}</span><span class="card-event">'s {{x.event}}</span>
+                                        {% else %}
+                                        <span class="card-name">{{x.name}}</span><span class="card-event"> {{x.event}}</span>
+                                        {% endif %}
+                                        <br>
+                                        <small class="card-category">[{{x.category}}]</small>
+                                        <span style="float:right" class="badge">{{x.date}}</span>
+                                        <span class="del-btn" style="float:right" data-id="{{x.id}}">&times;</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -240,25 +244,11 @@
                             <div class="input-group">
                                 <span class="input-group-addon">Category</span>
                                 <input id="category" type="text" class="form-control" name="category" size="30"
-                                    placeholder="Friends? Family? Love Tomb?">
+                                    placeholder="Friends? Family?">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon">Date</span>
                                 <input id="date" type="date" class="form-control" name="date" placeholder="YYYY-MM-DD">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">PIC</span>
-                                <div class="btn-group btn-toggle" data-toggle="buttons">
-                                    <label class="tgbtn btn btn-default">
-                                        <input type="radio" name="pic" value="C"> C
-                                    </label>
-                                    <label class="tgbtn btn btn-success active">
-                                        <input type="radio" name="pic" value="B" checked=""> B
-                                    </label>
-                                    <label class="tgbtn btn btn-default">
-                                        <input type="radio" name="pic" value="Y"> Y
-                                    </label>
-                                </div>
                             </div>
 
                         </div>
