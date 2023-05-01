@@ -1,4 +1,7 @@
 alembic/
+static/
+secret-*
+.DS_Store
 
 # docker
 Dockerfile

@@ -92,6 +92,11 @@ def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depend
     }
     return data
 
+from fastapi.staticfiles import StaticFiles
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+
 if __name__ == "__main__":
     os.system('uvicorn main:app --reload --host 0.0.0.0 --port 8080')
 
