@@ -3,10 +3,9 @@
 Mark all the REMARKABLES. Widget for marking important dates (birthdays/anniversaries).
 
 
-Framework   : FastAPI
+**Framework**   : FastAPI
 
-
-Database    : PostgreSQL
+**Database**    : PostgreSQL
 
 
 ## Installation
