@@ -70,7 +70,7 @@ def get_remarkables(db: Session = Depends(get_db)):
     return crud.get_remarkables(db)
 
 ## GET list of rmkbls by MONTH
-@app.get("/remarkables/month/")
+@app.get("/remarkables/month/{m}")
 def get_remarkables_by_month(m: int = datetime.now().month, db: Session = Depends(get_db)):
     if m > 12:
         raise HTTPException(status_code=404, detail="Invalid month")
